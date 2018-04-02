@@ -41,7 +41,7 @@ protected:
 public:
 	GameObject();
 	void virtual Destroy();
-	void Init(float x, float y, double xVel, double yVel, int xDir, int yDir, int xBound, int yBound);
+	void Init(double x, double y, double xVel, double yVel, int xDir, int yDir, int xBound, int yBound);
 	void virtual Update();
 	void virtual Render();
 	double GetX() { return x; }
@@ -53,7 +53,7 @@ public:
 	int GetID() { return ID; }
 	void SetID(int ID) { GameObject::ID = ID; }
 	bool GetAlive() { return alive; }
-	void SetAive(bool alive) { GameObject::ID = ID; }
+	void SetAlive(bool alive) { GameObject::ID = ID; }
 	bool GetCollidable() { return collidable; }
 	void SetCollidable(bool collidable) { GameObject::collidable = collidable; }
 	bool CheckCollision(GameObject *otherObject);

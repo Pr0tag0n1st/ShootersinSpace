@@ -11,9 +11,16 @@ using namespace std;
 #include <list>
 
 #include "Global.h"
-
+#include "Objects.h"
+#include "Spaceship.h"
 bool keys[5]{ false, false, false, false, false };
 enum KEYS { UP, DOWN, LEFT, RIGHT, Z };
+
+SpaceShip *ship;
+
+list<GameObject *>objects;
+list<GameObject *>::iterator iter;
+list<GameObject *>::iterator iter2;
 
 int main() {
 	//Shell variables
@@ -23,10 +30,8 @@ int main() {
 	int frames = 0;
 	int FPS = 0;
 	//Project variables
-	ALLEGRO_DISPLAY*display = NULL;
-	ALLEGRO_EVENT_QUEUE*event_queue = NULL;
-	ALLEGRO_TIMER*timer = NULL;
-	ALLEGRO_FONT*font = NULL;
+
+	ship = new SpaceShip();
 
 	//al_inits
 
@@ -39,10 +44,23 @@ int main() {
 	al_init_acodec_addon();
 	al_install_keyboard();
 	//al variables
-	display = al_create_display(SCREENW, SCREENH);
+
+	ALLEGRO_DISPLAY*display = NULL;
+	ALLEGRO_EVENT_QUEUE*event_queue = NULL;
+	ALLEGRO_TIMER*timer = NULL;
+	ALLEGRO_FONT*font = NULL;
+	ALLEGRO_BITMAP*shipimage = NULL;
+
 
 	//project inits
-	//init font
+	font = al_load_font("slkscr.ttf", 15, 0);
+	al_reserve_samples(15);
+	shipimage = al_load_bitmap("spaceship.png");
+	al_convert_mask_to_alpha(shipimage, al_map_rgb(255, 255, 255));
+	display = al_create_display(SCREENW, SCREENH);
+	ship->Init(shipimage);
+
+	objects.push_back(ship);
 	//init samples
 
 
@@ -105,6 +123,7 @@ int main() {
 				break;
 			}
 		}
+		//TIMER SECTION
 		//Update section
 		else if (ev.type == ALLEGRO_EVENT_TIMER) {
 			render = true;
@@ -114,17 +133,72 @@ int main() {
 				FPS = frames;
 				frames = 0;
 			}
+			if (keys[UP])
+				ship->MoveUp();
+			else if (keys[DOWN])
+				ship->MoveDown();
+			else
+				ship->ResetAnimation(1);
+			if (keys[LEFT])
+				ship->MoveLeft();
+			else if (keys[RIGHT])
+				ship->MoveRight();
+			else
+				ship->ResetAnimation(0);
+			//movement
+			for (iter = objects.begin(); iter != objects.end(); ++iter)
+			(*iter)->Update();
+			
+
+			//collision
+			for (iter = objects.begin(); iter != objects.end(); ++iter) {
+				//skip if not collidable
+				if (!(*iter)->Collidable()) continue;
+				for (iter2 = iter; iter2 !=objects.end(); ++iter2) {
+					//skip if not collidable
+					if (!(*iter2)->Collidable()) continue;
+					//Skip if same id
+					if ((*iter)->GetID() == (*iter2)->GetID()) continue;
+					if ( (*iter)->CheckCollision(*iter2)) {
+						//Call collided functions
+						(*iter)->Collided((*iter2)->GetID());
+						(*iter2)->Collided((*iter)->GetID());
+					}
+				}
+			}
+			//Remove dead
+			for(iter = objects.begin(); iter !=objects.end(); )
+				if (!(*iter)->GetAlive()) {
+					delete (*iter);
+					iter = objects.erase(iter);
+				}
+				else 
+					iter++;
 		}
-		//Render section
+	
 
 
 
-		//Visual update
-		al_flip_display();
-		al_clear_to_color(al_map_rgb(0, 0, 0));
+		//Visual update (Render section)
+		if (render&&al_is_event_queue_empty(event_queue)) {
+			render = false;
+			for (iter = objects.begin(); iter != objects.end(); ++iter)
+				(*iter)->Render();
+
+			al_flip_display();
+			al_clear_to_color(al_map_rgb(0, 0, 0));
+		}
+
+
 
 	}//end of gameloop
 	//destroy objects
+	for(iter = objects.begin(); iter != objects.end;) {
+		(*iter)->Destroy();
+		delete (*iter);
+		iter = objects.erase(iter);
+
+	}
 	return 0;
 }//end of main
 //function defs
