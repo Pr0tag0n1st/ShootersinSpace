@@ -147,7 +147,7 @@ int main() {
 				ship->ResetAnimation(0);
 			//movement
 			for (iter = objects.begin(); iter != objects.end(); ++iter)
-			(*iter)->Update();
+				(*iter)->Update();
 			
 
 			//collision
@@ -193,7 +193,7 @@ int main() {
 
 	}//end of gameloop
 	//destroy objects
-	for(iter = objects.begin(); iter != objects.end;) {
+	for(iter = objects.begin(); iter != objects.end();) {
 		(*iter)->Destroy();
 		delete (*iter);
 		iter = objects.erase(iter);
