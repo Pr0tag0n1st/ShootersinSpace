@@ -1,0 +1,5 @@
+#pragma once
+const int SCREENW = 800;
+const int SCREENH = 600;
+enum ID {PLAYER, ENEMY, BULLET, BORDER, MISC, EXPLOSION};
+enum STATE { TITLE, PLAYING, LOST };
