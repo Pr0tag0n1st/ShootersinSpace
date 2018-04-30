@@ -16,6 +16,7 @@ using namespace std;
 bool keys[5]{ false, false, false, false, false };
 enum KEYS { UP, DOWN, LEFT, RIGHT, Z };
 
+//Globals
 SpaceShip *ship;
 
 list<GameObject *>objects;
@@ -28,7 +29,7 @@ int main() {
 	bool render = false;
 	double gametime = 0;
 	int frames = 0;
-	int FPS = 0;
+	int FPS = 60;
 	//Project variables
 
 	ship = new SpaceShip();
@@ -66,7 +67,7 @@ int main() {
 
 	//Timer inits
 	event_queue = al_create_event_queue();
-	timer = al_create_timer(1.0 / 60);
+	timer = al_create_timer(1.0 / FPS);
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_start_timer(timer);
@@ -182,6 +183,8 @@ int main() {
 		//Visual update (Render section)
 		if (render&&al_is_event_queue_empty(event_queue)) {
 			render = false;
+
+			//project specific render
 			for (iter = objects.begin(); iter != objects.end(); ++iter)
 				(*iter)->Render();
 
@@ -199,6 +202,7 @@ int main() {
 		iter = objects.erase(iter);
 
 	}
+	//Shell objects
 	return 0;
 }//end of main
 //function defs
