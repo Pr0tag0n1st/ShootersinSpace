@@ -13,6 +13,8 @@ using namespace std;
 #include "Global.h"
 #include "Objects.h"
 #include "Spaceship.h"
+#include "Bullet.h"
+#include "Comet.h"
 bool keys[5]{ false, false, false, false, false };
 enum KEYS { UP, DOWN, LEFT, RIGHT, Z };
 
@@ -51,13 +53,14 @@ int main() {
 	ALLEGRO_TIMER*timer = NULL;
 	ALLEGRO_FONT*font = NULL;
 	ALLEGRO_BITMAP*shipimage = NULL;
-
+	ALLEGRO_BITMAP*cometimage = NULL;
 
 	//project inits
 	font = al_load_font("slkscr.ttf", 15, 0);
 	al_reserve_samples(15);
 	shipimage = al_load_bitmap("spaceship.png");
 	al_convert_mask_to_alpha(shipimage, al_map_rgb(255, 255, 255));
+	cometimage = al_load_bitmap("Cometimg.jpg");
 	display = al_create_display(SCREENW, SCREENH);
 	ship->Init(shipimage);
 
