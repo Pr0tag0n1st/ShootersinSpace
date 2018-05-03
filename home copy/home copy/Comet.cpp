@@ -5,13 +5,13 @@ Comet::Comet(float x, float y, ALLEGRO_BITMAP* image) {
 	SetID(ENEMY);
 
 	//Animation
-	maxFrame = 143;
+	maxFrame = 1;
 	curFrame = 0;
 	frameCount = 0;
 	frameDelay = 0;
-	frameWidth = 96;
-	frameHeight = 96;
-	animationColumns = 21;
+	frameWidth = 35;
+	frameHeight = 35;
+	animationColumns = 1;
 
 	if (rand() % 2)
 		animationDirection = 1;

@@ -60,13 +60,13 @@ int main() {
 	al_reserve_samples(15);
 	shipimage = al_load_bitmap("spaceship.png");
 	al_convert_mask_to_alpha(shipimage, al_map_rgb(255, 255, 255));
-	cometimage = al_load_bitmap("Cometimg.jpg");
 	display = al_create_display(SCREENW, SCREENH);
 	ship->Init(shipimage);
 
 	objects.push_back(ship);
 	//init samples
-
+	cometimage = al_load_bitmap("Cometimg.jpg");
+	al_convert_mask_to_alpha(cometimage, al_map_rgb(0, 0, 0));
 
 	//Timer inits
 	event_queue = al_create_event_queue();
@@ -101,6 +101,8 @@ int main() {
 				break;
 			case ALLEGRO_KEY_Z:
 				keys[Z] = true;
+				Bullet *bullet = new Bullet(ship->GetX() + 17, ship->GetY()+5);
+				objects.push_back(bullet);
 				break;
 			}
 			
@@ -150,6 +152,14 @@ int main() {
 			else
 				ship->ResetAnimation(0);
 			//movement
+
+
+			//Comet Generation
+			if (rand() % 100 == 0) {
+				Comet *comet = new Comet(SCREENW, 30 + rand() % (SCREENH - 60), cometimage);
+				objects.push_back(comet);
+			}
+
 			for (iter = objects.begin(); iter != objects.end(); ++iter)
 				(*iter)->Update();
 			

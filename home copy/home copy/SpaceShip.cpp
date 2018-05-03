@@ -14,7 +14,7 @@ void SpaceShip::Init(ALLEGRO_BITMAP*image) {
 	maxFrame = 3;
 	curFrame = 0;
 	frameWidth = 46;
-	frameHeight = 41;
+	frameHeight = 39;
 	animationColumns = 3;
 	animationDirection = 1;
 	animationRow = 1;
@@ -37,7 +37,7 @@ void SpaceShip::Render() {
 	GameObject::Render();
 	int fx = (curFrame%animationColumns)*frameWidth;
 	int fy = animationRow * frameHeight;
-	al_draw_bitmap_region(image, fx, fy, frameWidth, frameHeight, x - frameWidth / 2, y - frameHeight / 2, 0);
+	al_draw_bitmap_region(image, fx, fy, frameWidth, frameHeight, x - frameWidth/2, y - frameHeight/2, 0);
 
 }
 void SpaceShip::MoveUp() {
