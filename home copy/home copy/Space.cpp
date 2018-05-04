@@ -158,7 +158,6 @@ int main() {
 			if (rand() % 100 == 0) {
 				Comet *comet = new Comet(SCREENW, 30 + rand() % (SCREENH - 60), cometimage);
 				objects.push_back(comet);
-				cout << "Comet made" << endl;
 			}
 
 			for (iter = objects.begin(); iter != objects.end(); ++iter)
