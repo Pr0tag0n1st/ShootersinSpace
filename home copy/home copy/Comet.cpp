@@ -5,13 +5,20 @@ Comet::Comet(float x, float y, ALLEGRO_BITMAP* image) {
 	SetID(ENEMY);
 
 	//Animation
-	maxFrame = 1;
+	maxFrame = 143;
 	curFrame = 0;
 	frameCount = 0;
-	frameDelay = 0;
-	frameWidth = 35;
-	frameHeight = 35;
-	animationColumns = 1;
+	frameDelay = 2;
+	frameWidth = 96;
+	frameHeight = 96;
+	animationColumns = 21;
+
+	if (rand() % 2)
+		animationDirection = 1;
+	else
+		animationDirection = -1;
+
+	Comet::image = image;
 
 }
 
@@ -21,12 +28,27 @@ void Comet::Destroy() {
 }
 void Comet::Update() {
 	GameObject::Update();
+	if (++frameCount >= frameDelay) {
+		curFrame += animationDirection;
+		if (curFrame >= maxFrame)
+			curFrame = 0;
+		else if (curFrame <= 0)
+			curFrame = maxFrame;
 
+		frameCount = 0;
+
+		if (x + frameWidth < 0)
+			Collided(BORDER);
+	}
 
 
 }
 void Comet::Render() {
 	GameObject::Render();
+	int fx = (curFrame % animationColumns) * frameWidth;
+	int fy = (curFrame / animationColumns) * frameHeight;	
+
+	al_draw_bitmap_region(image, fx, fy, frameWidth, frameHeight, x - frameWidth / 2, y - frameHeight / 2, 0);
 
 }
 void Comet::Collided(int objectID) {

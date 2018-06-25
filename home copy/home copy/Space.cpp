@@ -64,9 +64,12 @@ int main() {
 	ship->Init(shipimage);
 
 	objects.push_back(ship);
-	//init samples
-	cometimage = al_load_bitmap("Cometimg.jpg");
+
+	cometimage = al_load_bitmap("asteroid.png");
 	al_convert_mask_to_alpha(cometimage, al_map_rgb(0, 0, 0));
+
+	//init samples
+
 
 	//Timer inits
 	event_queue = al_create_event_queue();
@@ -155,7 +158,7 @@ int main() {
 
 
 			//Comet Generation
-			if (rand() % 100 == 0) {
+			if (rand() % 150 == 0) {
 				Comet *comet = new Comet(SCREENW, 30 + rand() % (SCREENH - 60), cometimage);
 				objects.push_back(comet);
 				cout << "new comet" << endl;
@@ -168,7 +171,7 @@ int main() {
 			//collision
 			for (iter = objects.begin(); iter != objects.end(); ++iter) {
 				//skip if not collidable
-				if (!(*iter)->Collidable()) continue;
+				if (!(*iter)->Collidable()) continue; 
 				for (iter2 = iter; iter2 !=objects.end(); ++iter2) {
 					//skip if not collidable
 					if (!(*iter2)->Collidable()) continue;
